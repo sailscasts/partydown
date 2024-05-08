@@ -18,6 +18,5 @@ module.exports.routes = {
    * for configuration options and examples.                                  *
    *                                                                          *
    ***************************************************************************/
-  'GET /': 'home/index',
-  'GET /example': 'example/index'
+  'GET /:publicId?': 'home/index',
 }

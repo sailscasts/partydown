@@ -3,20 +3,31 @@ module.exports = {
 
   description: 'Home index.',
 
-  inputs: {},
+  inputs: {
+    publicId: {
+      type: 'string',
+    },
+  },
 
   exits: {
     success: {
-      responseType: 'inertia'
-    }
+      responseType: 'inertia',
+    },
+    notFound: {
+      responseType: 'notFound',
+    },
   },
 
-  fn: async function () {
+  fn: async function ({ publicId }) {
+    if (!publicId)
+      return { page: 'index', props: { message: 'Open a partydown' } }
+    const partydown = await Partydown.findOne({ publicId })
+    if (!partydown) throw 'notFound'
     return {
       page: 'index',
       props: {
-        name: 'Inertia'
-      }
+        partydown,
+      },
     }
-  }
+  },
 }
