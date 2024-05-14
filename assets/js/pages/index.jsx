@@ -6,17 +6,18 @@ import {
   quotePlugin,
   listsPlugin,
   MDXEditor,
-  type MDXEditorMethods,
+  markdownShortcutPlugin,
 } from '@mdxeditor/editor'
-import { useRef, useState } from 'react'
+import { useState, useRef } from 'react'
 import '@mdxeditor/editor/style.css'
 import { Head, Link } from '@inertiajs/react'
 
 export default function Index({ partydown, message }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const [currentPartydown, setCurrentPartydown] = useState(partydown)
+  const editorRef = useRef(null)
+
   function onEditorChange(markdown) {
-    setCurrentPartydown(markdown)
+    editorRef.current?.setMarkdown(markdown)
   }
   return (
     <>
@@ -128,10 +129,11 @@ export default function Index({ partydown, message }) {
       <main className="px-3 lg:mx-auto lg:w-6/12">
         {partydown ? (
           <MDXEditor
-            markdown={currentPartydown.content}
+            markdown={partydown.content}
             autoFocus
             contentEditableClassName="prose lg:prose-xl"
             onChange={onEditorChange}
+            ref={editorRef}
             plugins={[
               headingsPlugin(),
               linkPlugin(),
@@ -139,6 +141,7 @@ export default function Index({ partydown, message }) {
               codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
               quotePlugin(),
               listsPlugin(),
+              markdownShortcutPlugin(),
             ]}
           />
         ) : (
