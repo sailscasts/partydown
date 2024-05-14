@@ -22,7 +22,7 @@
   "devDependencies": {
     "@rsbuild/plugin-react": "^0.6.2",
     "@tailwindcss/typography": "^0.5.13",
-    "create-sails-generator": "^0.0.1",
+    "create-sails-generator": "^0.0.3",
     "prettier": "^2.6.2",
     "prettier-plugin-tailwindcss": "^0.1.11",
     "sails-hook-shipwright": "^0.1.1",
