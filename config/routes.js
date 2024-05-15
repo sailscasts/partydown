@@ -19,7 +19,7 @@ module.exports.routes = {
    *                                                                          *
    ***************************************************************************/
   'GET /:publicId?': 'home/index',
-
+  'POST /partydowns': 'partydown/create-partydown',
   'PUT /partydowns/:publicId': 'partydown/update-partydown',
   'DELETE /partydowns/:publidId': 'partydown/delete-partydown',
 
