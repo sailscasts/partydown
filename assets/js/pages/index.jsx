@@ -10,15 +10,36 @@ import {
 } from '@mdxeditor/editor'
 import { useState, useRef } from 'react'
 import '@mdxeditor/editor/style.css'
-import { Head, Link, usePage } from '@inertiajs/react'
+import { Head, Link, usePage, useForm } from '@inertiajs/react'
+import debounce from 'lodash.debounce'
 
 export default function Index({ partydown, message }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const editorRef = useRef(null)
+
   const loggedInUser = usePage().props.loggedInUser
+  const createPartydownForm = useForm({})
+
+  const updatePartydownForm = useForm({
+    publicId: partydown?.publicId,
+    content: '',
+  })
+
   function onEditorChange(markdown) {
-    editorRef.current?.setMarkdown(markdown)
+    debouncedUpdatePartydown(markdown)
   }
+
+  const debouncedUpdatePartydown = debounce((markdown) => {
+    updatePartydownForm.data.content = markdown
+    updatePartydownForm.put(`/partydowns/${partydown?.publicId}`, {
+      preserveScroll: true,
+    })
+  }, 4_000)
+
+  function createPartydown() {
+    createPartydownForm.post('/partydowns')
+  }
+
   return (
     <>
       <Head
@@ -26,60 +47,70 @@ export default function Index({ partydown, message }) {
       />
       <nav className="flex justify-between px-4 py-2">
         <ul>
-          <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="rounded-md bg-slate-50 px-3 py-2 transition-colors hover:bg-slate-100"
-          >
-            {isSidebarOpen ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18 18 6M6 6l12 12"
-                />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3.75 9h16.5m-16.5 6.75h16.5"
-                />
-              </svg>
-            )}
-          </button>
-        </ul>
-        <ul>
-          <button className="rounded-md bg-teal-50 px-3 py-2 text-teal-800 transition-colors hover:bg-teal-100">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="h-6 w-6"
+          <li>
+            <button
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="rounded-md bg-slate-50 px-3 py-2 transition-colors hover:bg-slate-100"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
-              />
-            </svg>
-          </button>
+              {isSidebarOpen ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3.75 9h16.5m-16.5 6.75h16.5"
+                  />
+                </svg>
+              )}
+            </button>
+          </li>
+        </ul>
+        <ul className="flex space-x-2 items-center">
+        <li className="text-gray-400 text-sm">
+            <p>
+              {updatePartydownForm.processing ? 'Saving...' : null}
+              {updatePartydownForm.recentlySuccessful ? 'Saved!' : null}
+            </p>
+          </li>
+          <li>
+            <button className="rounded-md bg-teal-50 px-3 py-2 text-teal-800 transition-colors hover:bg-teal-100">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="h-6 w-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
+                />
+              </svg>
+            </button>
+          </li>
         </ul>
       </nav>
       <aside
@@ -89,7 +120,7 @@ export default function Index({ partydown, message }) {
         }`}
       >
         <section className="flex justify-between px-2 py-4">
-          <p className="truncate">{ loggedInUser.fullName }</p>
+          <p className="truncate">{loggedInUser.fullName}</p>
           <Link
             href="/partydowns"
             method="post"
@@ -113,12 +144,12 @@ export default function Index({ partydown, message }) {
           </Link>
         </section>
         <p className="pl-2 text-sm text-gray-400">Your Partydowns</p>
-        <ul>
-         { loggedInUser.partydowns.map((partydown) => (
-            <li key={partydown.publicId}>
+        <ul className="space-y-2">
+          {loggedInUser.partydowns.map((partydown) => (
+            <li key={partydown?.publicId}>
               <Link
                 className="block truncate rounded-sm px-2 py-1 transition-colors hover:bg-gray-100 active:bg-gray-100"
-                href={`/${partydown.publicId}`}
+                href={`/${partydown?.publicId}`}
               >
                 {partydown.title}
               </Link>
@@ -129,7 +160,7 @@ export default function Index({ partydown, message }) {
       <main className="px-3 lg:mx-auto lg:w-6/12">
         {partydown ? (
           <MDXEditor
-            markdown={partydown.content}
+            markdown={partydown?.content}
             autoFocus
             contentEditableClassName="prose lg:prose-xl"
             onChange={onEditorChange}
@@ -145,8 +176,18 @@ export default function Index({ partydown, message }) {
             ]}
           />
         ) : (
-          <section className="min-h-screen flex items-center justify-center flex-col">
+          <section className="flex min-h-screen flex-col items-center justify-center space-y-3">
             <p className="text-lg text-gray-500">{message}</p>
+            <Link
+              href="/partydowns"
+              as="button"
+              method="post"
+              className="w-3/12 rounded-md bg-teal-300 px-3 py-2 transition-colors hover:bg-teal-400 disabled:cursor-not-allowed disabled:bg-teal-100"
+              disabled={createPartydownForm.processing}
+              onClick={createPartydown}
+            >
+              Create a partydown
+            </Link>
           </section>
         )}
       </main>
