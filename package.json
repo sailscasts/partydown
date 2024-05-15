@@ -12,10 +12,12 @@
     "@sailshq/socket.io-redis": "^5.2.0",
     "inertia-sails": "^0.2.2",
     "nanoid": "^3.3.7",
+    "nodemailer": "^6.9.13",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sails": "^1.5.2",
     "sails-flash": "^0.0.1",
+    "sails-hook-mail": "^0.1.0",
     "sails-hook-organics": "^2.2.2",
     "sails-hook-orm": "^4.0.0",
     "sails-hook-sockets": "^2.0.0"
