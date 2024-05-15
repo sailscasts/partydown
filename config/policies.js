@@ -17,6 +17,7 @@ module.exports.policies = {
    ***************************************************************************/
   '*': false,
   'auth/*': 'is-guest',
+  'auth/logout': 'is-authenticated',
   'home/*': 'is-authenticated',
   'partydown/*': 'is-authenticated',
 }

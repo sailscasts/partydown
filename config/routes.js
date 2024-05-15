@@ -20,19 +20,21 @@ module.exports.routes = {
    ***************************************************************************/
   'GET /:publicId?': 'home/index',
   'POST /partydowns': 'partydown/create-partydown',
+
   'PUT /partydowns/:publicId': 'partydown/update-partydown',
   'DELETE /partydowns/:publidId': 'partydown/delete-partydown',
 
-  // Auth
   'GET /login': 'auth/view-login',
   'POST /login': 'auth/login',
 
   'GET /signup': 'auth/view-signup',
   'POST /signup': 'auth/signup',
 
+  'DELETE /logout': 'auth/logout',
+
   'GET /verify-email': 'auth/view-verify-email',
   'POST /verify-email': 'auth/verify-email',
 
   'GET /reset-password': 'auth/view-reset-password',
-  'GET /reset-password': 'auth/reset-password',
+  'POST /reset-password': 'auth/reset-password',
 }

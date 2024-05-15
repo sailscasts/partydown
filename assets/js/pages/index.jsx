@@ -86,8 +86,8 @@ export default function Index({ partydown, message }) {
             </button>
           </li>
         </ul>
-        <ul className="flex space-x-2 items-center">
-        <li className="text-gray-400 text-sm">
+        <ul className="flex items-center space-x-2">
+          <li className="text-sm text-gray-400">
             <p>
               {updatePartydownForm.processing ? 'Saving...' : null}
               {updatePartydownForm.recentlySuccessful ? 'Saved!' : null}
@@ -120,13 +120,14 @@ export default function Index({ partydown, message }) {
         }`}
       >
         <section className="flex justify-between px-2 py-4">
-          <p className="truncate">{loggedInUser.fullName}</p>
           <Link
             href="/partydowns"
             method="post"
             as="button"
             title="New partydown"
+            className="flex justify-between items-center w-full bg-teal-300 hover:bg-teal-400 transition-colors px-3 py-2 rounded-md"
           >
+            <span>New partydown</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -156,6 +157,34 @@ export default function Index({ partydown, message }) {
             </li>
           ))}
         </ul>
+        <section className="absolute bottom-4 flex w-[90%] justify-between">
+          <div>
+          <p className="truncate text-gray-500">{loggedInUser.fullName}</p>
+          <p className="truncate text-gray-500 text-sm">{loggedInUser.emailAddress}</p>
+          </div>
+          <Link
+            method="delete"
+            href="/logout"
+            as="button"
+            className="text-red-500"
+            title="logout"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="h-6 w-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+              />
+            </svg>
+          </Link>
+        </section>
       </aside>
       <main className="px-3 lg:mx-auto lg:w-6/12">
         {partydown ? (
