@@ -42,7 +42,7 @@ module.exports.mail = {
    *
    */
   from: {
-    address: 'hello@hagfish.io',
-    name: 'Kelvin from Hagfish',
+    address: 'hello@sailsconf.com',
+    name: 'Kelvin from Partydown',
   },
 }
