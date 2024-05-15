@@ -16,6 +16,7 @@
     "react-dom": "^18.2.0",
     "sails": "^1.5.2",
     "sails-flash": "^0.0.1",
+    "sails-hook-organics": "^2.2.2",
     "sails-hook-orm": "^4.0.0",
     "sails-hook-sockets": "^2.0.0"
   },
