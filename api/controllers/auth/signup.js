@@ -61,14 +61,13 @@ module.exports = {
             problems: [`"signup" ${error.message}`],
           },
         }
-      } else {
-        throw {
-          badSignupRequest: {
-            problems: [
-              `"signup" ${error.message} Apologies, but something went wrong with signing you up. Please try again.`,
-            ],
-          },
-        }
+      }
+      throw {
+        badSignupRequest: {
+          problems: [
+            `"signup" Apologies, but something went wrong with signing you up. Please try again.`,
+          ],
+        },
       }
     }
     return '/verify-email'
