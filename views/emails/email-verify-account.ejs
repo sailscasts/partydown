@@ -1,0 +1,34 @@
+<% /* Note: This is injected into `views/layouts/layout-email.ejs` */ %>
+<h2
+  style="
+    margin-bottom: 32px;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 33px;
+    letter-spacing: 0em;
+    text-align: left;
+  "
+>
+  Welcome, <%= fullName %>!
+</h2>
+<p style="margin-bottom: 32px">
+  Please enter this verification code to get started on Partydown
+</p>
+
+<h1
+  style="
+    margin-bottom: 32px;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 33px;
+    letter-spacing: 0em;
+    text-align: left;
+  "
+>
+  <%= verificationCode %>
+</h1>
+
+<p style="margin-bottom: 5px">Thanks,</p>
+<p style="margin-top: 0px">Partydown</p>
