@@ -10,12 +10,12 @@ import {
 } from '@mdxeditor/editor'
 import { useState, useRef } from 'react'
 import '@mdxeditor/editor/style.css'
-import { Head, Link } from '@inertiajs/react'
+import { Head, Link, usePage } from '@inertiajs/react'
 
 export default function Index({ partydown, message }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const editorRef = useRef(null)
-
+  const loggedInUser = usePage().props.loggedInUser
   function onEditorChange(markdown) {
     editorRef.current?.setMarkdown(markdown)
   }
@@ -89,7 +89,7 @@ export default function Index({ partydown, message }) {
         }`}
       >
         <section className="flex justify-between px-2 py-4">
-          <p className="truncate">Kelvin Omereshone</p>
+          <p className="truncate">{ loggedInUser.fullName }</p>
           <Link
             href="/partydowns"
             method="post"
@@ -114,7 +114,7 @@ export default function Index({ partydown, message }) {
         </section>
         <p className="pl-2 text-sm text-gray-400">Your Partydowns</p>
         <ul>
-          {[{ publicId: 'hgdakbgaga', title: 'Partydown' }].map((partydown) => (
+         { loggedInUser.partydowns.map((partydown) => (
             <li key={partydown.publicId}>
               <Link
                 className="block truncate rounded-sm px-2 py-1 transition-colors hover:bg-gray-100 active:bg-gray-100"
@@ -145,7 +145,9 @@ export default function Index({ partydown, message }) {
             ]}
           />
         ) : (
-          <p>{message}</p>
+          <section className="min-h-screen flex items-center justify-center flex-col">
+            <p className="text-lg text-gray-500">{message}</p>
+          </section>
         )}
       </main>
     </>
