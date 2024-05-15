@@ -6,6 +6,7 @@ module.exports = {
   inputs: {
     fullName: {
       type: 'string',
+      minLength: 8,
       required: true,
     },
     emailAddress: {
@@ -15,6 +16,7 @@ module.exports = {
     },
     password: {
       type: 'string',
+      minLength: 8,
       required: true,
     },
   },
@@ -31,15 +33,44 @@ module.exports = {
   },
 
   fn: async function ({ fullName, emailAddress, password }) {
-    const unverifiedUser = await Creator.create({
-      fullName,
-      emailAddress,
-      password,
-      tosAcceptedByIp: this.req.ip,
-      emailVerificationCode: sails.helpers.generateVerificationCode(),
-      emailVerificationCodeExpiresAt:
-        Date.now() + sails.config.custom.emailVerificationCodeTTL,
-    })
+    try {
+      const unverifiedUser = await User.create({
+        fullName,
+        emailAddress,
+        password,
+        tosAcceptedByIp: this.req.ip,
+        emailVerificationCode: sails.helpers.generateCode(),
+        emailVerificationCodeExpiresAt:
+          Date.now() + sails.config.custom.emailVerificationCodeTTL,
+      }).fetch()
+
+      await sails.helpers.mail.send.with({
+        subject: `${unverifiedUser.emailVerificationCode} is your verification code`,
+        template: 'email-verify-account',
+        to: unverifiedUser.emailAddress,
+        templateData: {
+          verificationCode: unverifiedUser.emailVerificationCode,
+          fullName: unverifiedUser.fullName,
+        },
+      })
+    } catch (error) {
+      sails.log(error)
+      if (error.name === 'UsageError') {
+        throw {
+          badSignupRequest: {
+            problems: [`"signup" ${error.message}`],
+          },
+        }
+      } else {
+        throw {
+          badSignupRequest: {
+            problems: [
+              `"signup" ${error.message} Apologies, but something went wrong with signing you up. Please try again.`,
+            ],
+          },
+        }
+      }
+    }
     return '/verify-email'
   },
 }
