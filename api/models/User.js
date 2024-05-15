@@ -84,4 +84,11 @@ module.exports = {
       via: 'owner',
     },
   },
+  beforeCreate: async function (valuesToSet, proceed) {
+    valuesToSet.password = await sails.helpers.passwords.hashPassword(
+      valuesToSet.password
+    )
+
+    return proceed()
+  },
 }
