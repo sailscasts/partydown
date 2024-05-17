@@ -22,7 +22,10 @@ module.exports.routes = {
   'POST /partydowns': 'partydown/create-partydown',
 
   'PUT /partydowns/:publicId': 'partydown/update-partydown',
-  'DELETE /partydowns/:publidId': 'partydown/delete-partydown',
+  'DELETE /partydowns/:publicId': 'partydown/delete-partydown',
+
+  'GET /s/:shareId': 'partydown/view-shared-partydown',
+  'PATCH /partdowns/:publicId': 'partydown/share-partydown',
 
   'GET /login': 'auth/view-login',
   'POST /login': 'auth/login',

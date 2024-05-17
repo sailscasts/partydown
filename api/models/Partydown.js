@@ -19,6 +19,11 @@ module.exports = {
       type: 'ref',
       defaultsTo: '# New Partydown',
     },
+    shareId: {
+      type: 'string',
+      allowNull: true,
+      columnName: 'share_id',
+    },
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
     //  ╚═╝╩ ╩╚═╝╚═╝═╩╝╚═╝
@@ -29,7 +34,7 @@ module.exports = {
     owner: { model: 'user' },
   },
   beforeCreate: async function (valuesToSet, proceed) {
-    valuesToSet.publicId = sails.helpers.generatePublicId()
+    valuesToSet.publicId = sails.helpers.generateId()
     valuesToSet.title = sails.helpers.extractTitleFromPartydown(
       valuesToSet.content
     )
